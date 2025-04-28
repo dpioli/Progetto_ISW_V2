@@ -13,15 +13,18 @@ public class Gerarchia {
 	
 	private Categoria catRadice;
 	private Configuratore proprietario;
+	private Comprensorio comprensorio;
 	
 	/**
 	 * Costruttore della classe gerarchia
 	 * @param catRadice
 	 * @param prorpietario
+	 * @param compr 
 	 */
-	public Gerarchia (Categoria catRadice, Configuratore prorpietario) {
+	public Gerarchia (Categoria catRadice, Configuratore prorpietario, Comprensorio comprensorio) {
 		this.catRadice = catRadice;
 		this.proprietario = prorpietario;
+		this.comprensorio = comprensorio;
 	}
 
 	public Categoria getCatRadice() {
@@ -30,6 +33,10 @@ public class Gerarchia {
 
 	public Configuratore getProprietario() {
 		return proprietario;
+	}
+	
+	public Comprensorio getComprensorio() {
+		return comprensorio;
 	}
 	
 	/**

@@ -7,6 +7,7 @@ import applicazione.Comprensorio;
 import applicazione.FatConversione;
 import applicazione.Gerarchia;
 import utenti.Configuratore;
+import utenti.Fruitore;
 
 /**
  * Classe che permette la gestione logistica dell'aggiornamento e modifica dei dati salvaati sui file
@@ -20,6 +21,7 @@ public class LogicaPersistenza {
 	private ArrayList<Configuratore> configuratori = new ArrayList<Configuratore>();
 	private ArrayList<CategoriaFoglia> categorieFoglia = new ArrayList<CategoriaFoglia>();
 	private FatConversione fatConversione;
+	private ArrayList<Fruitore> fruitori = new ArrayList<Fruitore>();
 	
 	public LogicaPersistenza() {
 		this.gerarchie = GestorePersistenza.caricaGerarchie();
@@ -27,6 +29,7 @@ public class LogicaPersistenza {
 		this.configuratori = GestorePersistenza.caricaConfiguratori();
 		this.fatConversione = GestorePersistenza.caricaFatConversione();
 		this.categorieFoglia = GestorePersistenza.caricaCategorieFoglia();
+		this.fruitori = GestorePersistenza.caricaFruitori();
 	}
 	
 	/*
@@ -116,6 +119,22 @@ public class LogicaPersistenza {
 	public void setCategorieFoglia(ArrayList<CategoriaFoglia> categorieFoglia) {
 		this.categorieFoglia = categorieFoglia;
 	}
+	
+	/**
+	 * Metodo per ottenere l'insieme dei fruitori
+	 * @return fruitori
+	 */
+	public ArrayList<Fruitore> getFruitori() {
+		return fruitori;
+	}
+	
+	/**
+	 * Medoto per modificare l'insieme dei fruitori
+	 * @param fruitori
+	 */
+	public void setFruitori(ArrayList<Fruitore> fruitori) {
+		this.fruitori = fruitori;
+	}
 
 	/*
 	 * 
@@ -125,7 +144,6 @@ public class LogicaPersistenza {
 	 * 
 	 */
 	
-
 	/***
 	 * METODI PER L'AGGIUNTA DI NUOVI OGGETTI AI RISPETTIVI INSIEMI
 	 * @param oggetto da aggiungere
@@ -141,12 +159,14 @@ public class LogicaPersistenza {
 
 	public void addGerarchia(Gerarchia gerarchia) {
 		gerarchie.add(gerarchia);
-		
+	}
+	
+	public void addFruitore(Fruitore fruitore) {
+		fruitori.add(fruitore);
 	}
 
 	public void addCategoriaFoglia(CategoriaFoglia nuovaCategFoglia) {
 		categorieFoglia.add(nuovaCategFoglia);
-		
 	}
 	
 	public void aggiungiFDC(Integer nuova) {

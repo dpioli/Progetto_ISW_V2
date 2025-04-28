@@ -25,7 +25,6 @@ import util.Menu;
  */
 public class MenuConfiguratore extends Menu {
 	
-	
 	private Configuratore config;
 	private LogicaPersistenza logica;
 
@@ -249,8 +248,15 @@ public class MenuConfiguratore extends Menu {
 			}
 		}
 		
+		Comprensorio comp = null;
+		if(logica.getComprensori().isEmpty()) {
+			System.out.println("Non è presente nessun comprensorio all'interno del sistema, creane uno prima di creare una gerarchia.");
+			return;
+		} else {
+			comp = selezionaComprensorio(logica.getComprensori());
+		}
+		
 		String nomeCampo = InputDati.leggiStringaNonVuota(MSG_NOME_CAMPOCARATT);
-		//ArrayList<String> valoriCampo = new ArrayList<>();
 		HashMap<String, String> valoriCampo = new HashMap<>();
 		
 		boolean continua = true;
@@ -265,7 +271,7 @@ public class MenuConfiguratore extends Menu {
 		}
 		int dimensioneDominio = valoriCampo.size();
 		
-		Gerarchia nuovaGerarchia = addGerarchia(nomeGerarchia, nomeCampo, valoriCampo, dimensioneDominio);
+		Gerarchia nuovaGerarchia = addGerarchia(nomeGerarchia, comp, nomeCampo, valoriCampo, dimensioneDominio);
 		System.out.println(MSG_INSERISCI_SOTTOCATEG);
 		addSottoCategorie(nuovaGerarchia.getCatRadice());
 		
@@ -274,7 +280,7 @@ public class MenuConfiguratore extends Menu {
 		
 		salvaGerarchieEFoglie();
 	}
-	
+
 	/**
 	 * Metodo di aggiunta gerarchia.
 	 * Crea l'oggetto gerarchia e lo aggiunge alle gerarchie della logica.
@@ -284,12 +290,11 @@ public class MenuConfiguratore extends Menu {
 	 * @param dimensioneDominio
 	 * @return nuova gerarchia
 	 */
-	private Gerarchia addGerarchia(String nomeGerarchia, String nomeCampo, HashMap<String, String> valoriCampo,
+	private Gerarchia addGerarchia(String nomeGerarchia, Comprensorio compr, String nomeCampo, HashMap<String, String> valoriCampo,
 			Integer dimensioneDominio) {
 		CampoCaratteristico campoCaratt = new CampoCaratteristico(nomeCampo, valoriCampo);
-		//campoCaratt.aggiungiValori(valoriCampo);
 		CategoriaNonFoglia radice = new CategoriaNonFoglia(nomeGerarchia, campoCaratt, dimensioneDominio);
-		Gerarchia nuovaGerarchia = new Gerarchia(radice, config);
+		Gerarchia nuovaGerarchia = new Gerarchia(radice, config, compr);
 		return nuovaGerarchia;
 	}
 	

@@ -2,6 +2,7 @@ package menu;
 
 import persistenza.LogicaPersistenza;
 import utenti.Configuratore;
+import utenti.Fruitore;
 import util.Menu;
 
 /**
@@ -20,13 +21,15 @@ public class MenuPrincipale{
 	 */
 	private static final String MSG_BENVENUTO = "   BENVENUTO -- PAGINA INIZIALE";
 	private static final String MSG_ACC_CONFIG = "Accedi come configuratore";
+	private static final String MSG_ACC_FRUIT = "Accedi come fruitore";
 	private static final int CASE_CONFIGURATORE = 1;
-	private String[] vociIniziali = {MSG_ACC_CONFIG};
+	private static final int CASE_FRUITORE = 2;
+	private String[] vociIniziali = {MSG_ACC_CONFIG, MSG_ACC_FRUIT};
 	
 	/**
-	 * Menu Autenticazione Configuratore
+	 * Menu Autenticazione 
 	 */
-	private static final String MSG_AUTENT_CONFIG = "\tAUTENTICAZIONE";
+	private static final String MSG_AUTENT = "\tAUTENTICAZIONE";
 	private static final String MSG_PRIMO_ACCESSO = "Registrati";
 	private static final String MSG_CONFIG_REGISTRATO= "Accedi";
 	private final static String MSG_P_PRECEDENTE = "Ritorna alla pagina iniziale";
@@ -34,7 +37,7 @@ public class MenuPrincipale{
 	private static final int CASE_PRIMO_ACCESSO = 1;
 	private static final int CASE_ACCESSO = 2;
 	private static final int CASE_P_INIZIALE = 3;
-	private String[] vociConfiguratore = {MSG_PRIMO_ACCESSO, MSG_CONFIG_REGISTRATO, MSG_P_PRECEDENTE};
+	private String[] vociAutenticazione = {MSG_PRIMO_ACCESSO, MSG_CONFIG_REGISTRATO, MSG_P_PRECEDENTE};
 	
 	/**
 	 * Voci Menu Configuratore
@@ -47,6 +50,11 @@ public class MenuPrincipale{
 	private static final int CASE_SALVA = 6;
 	private static final int CASE_P_AUTENTICAZIONE = 7;
 	private static final int CASE_USCITA = 0;
+	
+	/**
+	 * Voci Menu Fruitore
+	 */
+	private static final int CASE_NAVIGA = 1;
 
 	/**
 	 * Costruttore della pagina iniziale del programma
@@ -67,17 +75,48 @@ public class MenuPrincipale{
 			switch(scelta) {
 			case CASE_CONFIGURATORE:
 				autenticazioneConfig();
-				break;			
+				break;	
+			case CASE_FRUITORE:
+				autenticazioneFruit();
+				break;
 			}
 		} while (scelta != CASE_USCITA );
 	}
 	
+	private void autenticazioneFruit() {
+		Autenticazione autentic = new Autenticazione(logica);
+		Menu menuAccessoFruit = new Menu(MSG_AUTENT, vociAutenticazione);
+		int scelta;
+		do {
+			scelta = menuAccessoFruit.scegli();
+			switch(scelta) {
+			case CASE_PRIMO_ACCESSO:
+				autentic.primoAccessoFruit();
+				break;
+			case CASE_ACCESSO:
+				Fruitore fruit = autentic.accessoFruitore();
+				if(fruit != null) {
+					MenuFruitore menuFruit = new MenuFruitore(fruit, logica);
+					avviaMenuFruitore(menuFruit);
+				} else {
+					scelta = CASE_P_INIZIALE;
+				}
+				break;
+			case CASE_P_INIZIALE:
+				break;
+			default:
+				System.exit(CASE_USCITA);
+			}
+		} while (scelta != CASE_P_INIZIALE);
+		
+	}
+
 	/**
 	 * Metodo per autenticare l'utente come configuratore o registrarsi come tale.
 	 */
 	private void autenticazioneConfig() {
 		Autenticazione autentic = new Autenticazione(logica);
-		Menu menuAccessoConfig = new Menu(MSG_AUTENT_CONFIG, vociConfiguratore);
+		Menu menuAccessoConfig = new Menu(MSG_AUTENT, vociAutenticazione);
 		int scelta;
 		do {
 			scelta = menuAccessoConfig.scegli();
@@ -130,12 +169,27 @@ public class MenuPrincipale{
 			case CASE_SALVA:
 				menuConfig.salva();
 				break;
-			case  CASE_P_AUTENTICAZIONE:
+			case CASE_P_AUTENTICAZIONE:
 				break;
 			default:
 				System.exit(CASE_USCITA);
 			}
 		} while (scelta != CASE_P_AUTENTICAZIONE);
+	}
+	
+	private void avviaMenuFruitore(MenuFruitore menuFruit) {
+		int scelta;
+		do {
+			scelta = menuFruit.scegli();
+			switch(scelta) {
+			case CASE_NAVIGA:
+				menuFruit.naviga();
+				break;
+			default:
+				System.exit(CASE_USCITA);
+			}
+		} while (scelta != CASE_P_AUTENTICAZIONE);
+		
 	}
 
 }

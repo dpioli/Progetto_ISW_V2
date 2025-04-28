@@ -1,5 +1,9 @@
 package util;
 
+import java.util.ArrayList;
+
+import applicazione.Comprensorio;
+
 /**
  * Questa classe rappresenta un menu testuale generico a piu' voci
  * Si suppone che la voce per uscire sia sempre associata alla scelta 0 
@@ -24,7 +28,16 @@ public class Menu {
 		stampaMenu();
 		return InputDati.leggiIntero(RICHIESTA_INSERIMENTO, 0, voci.length);
 	}
-
+	
+	public static Comprensorio selezionaComprensorio(ArrayList<Comprensorio> comprensori) {
+		for(int i = 0; i < comprensori.size(); i++) {
+			System.out.println(i + ": " + comprensori.get(i));
+		}
+		
+		int scelta = InputDati.leggiIntero("Seleziona il comprensorio di appartenenza della gerarchia > ", 0, comprensori.size());
+		return comprensori.get(scelta);
+	}
+	
 	public void stampaMenu() {
 		System.out.println(CORNICE);
 		System.out.println(titolo);

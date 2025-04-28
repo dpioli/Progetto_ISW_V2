@@ -1,9 +1,12 @@
 package menu;
 
+import applicazione.Comprensorio;
 import persistenza.GestorePersistenza;
 import persistenza.LogicaPersistenza;
 import utenti.Configuratore;
+import utenti.Fruitore;
 import util.InputDati;
+import util.Menu;
 
 
 /**
@@ -87,6 +90,31 @@ public class Autenticazione {
 		return null;
 	}
 	
+	public Fruitore accessoFruitore() {
+		String username = InputDati.leggiStringaNonVuota(MSG_ASK_USERNAME);
+		String password;
+		if(richiedeUscita(username)) {
+			System.out.println(RILEVATA_RICHIESTA_DI_USCITA);
+			return null;
+		}
+		
+		for(Fruitore f: logica.getFruitori()) {
+			if(f.getUsername().equals(username)) {
+				do {
+					password = InputDati.leggiStringaNonVuota(MSG_ASK_PASSWORD);
+					if(f.getPassword().equals(password)) {
+						System.out.println(MSG_ACCESSO_RIUSCITO + username + "\n");
+						return f;
+					} else {
+						System.out.println(PSW_ERRATA);
+					}
+				} while (!richiedeUscita(password));
+			}
+		}
+		System.out.println(UTENTE_NON_PRESENTE);
+		return null;
+	}
+	
 	/***
 	 * METODO PER REGISTRARSI PER LA PRIMA VOLTA COME CONFIGUTATORE
 	 * 1. Controlla che abbia i permessi.
@@ -105,6 +133,24 @@ public class Autenticazione {
 		GestorePersistenza.salvaConfiguratori(logica.getConfiguratori());
 	}
 	
+	
+	public void primoAccessoFruit() {
+		
+		if(logica.getComprensori().isEmpty()) {
+			System.out.println("Non è presente nessun comprensorio, creane uno prima di continuare");
+			return;
+		}
+		System.out.println("Scegli il comprensorio a cui appartieni");
+		Comprensorio comp = Menu.selezionaComprensorio(logica.getComprensori());
+		
+		String newUsername = inserisciUsernameFruit();
+		String newPassword = InputDati.leggiStringaNonVuota(MSG_NEW_PASSWORD);
+		String mail = InputDati.leggiStringaNonVuota("Inserisci la tua mail > ");
+		
+		logica.addFruitore(new Fruitore(comp, newUsername, newPassword, mail));
+		GestorePersistenza.salvaFruitori(logica.getFruitori());
+	}
+
 	/***
 	 * Metodo che controlla se l'username inserito è già presente nel sistema.
 	 * @param username da controllare
@@ -163,6 +209,34 @@ public class Autenticazione {
 		} while(!corretto);
 		return newUsername;
 	}
+	
+	public String inserisciUsernameFruit() {
+		boolean corretto = false;
+		String newUsername = "";
+		do {
+			newUsername = InputDati.leggiStringaNonVuota(MSG_NEW_USERNAME);
+			if(ePresenteConfiguratore(newUsername)) {
+				System.out.println(MSG_NON_VALIDO);
+			} else if(ePresenteFruitore(newUsername)) {
+				System.out.println(MSG_NON_VALIDO);
+			} else {
+				break;
+			}
+		} while(!corretto);
+		return newUsername;
+	}
+	
+	
+	public boolean ePresenteFruitore(String username) {
+		for(Fruitore f: logica.getFruitori()) {
+			if(f.getUsername().equals(username)) {
+				System.out.println(MSG_NON_VALIDO);
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Metodo che verifica se l'input corrisponde alla parola chiave di uscita.
 	 * @param input
@@ -171,6 +245,5 @@ public class Autenticazione {
 	public boolean richiedeUscita(String in) {
 		return in.equalsIgnoreCase(ESC) ? true : false;
 	}
-	
 
 }
