@@ -27,7 +27,7 @@ public class GestorePersistenza {
 	private static final String FILE_COMPRENSORI = "../Progetto_ISW_V2/src/dati/comprensori.json";
 	private static final String FILE_FATT_CONVERSIONE = "../Progetto_ISW_V2/src/dati/fattConversione.json";
 	private static final String FILE_CATEGORIEFOGLIA = "../Progetto_ISW_V2/src/dati/categorieFoglia.json";
-	private static final String FILE_FRUITORI = "../Progetto_ISW_V27src/dati/fruitori.json";
+	private static final String FILE_FRUITORI = "../Progetto_ISW_V2/src/dati/fruitori.json";
 	
 	/* PER la JAR
 	private static final String FILE_CONFIGURATORI = "dati/configuratori.json";

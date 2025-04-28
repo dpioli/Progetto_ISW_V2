@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "username": "era",
+    "password": "era",
+    "mail": "psw",
+    "comprensorio": {
+      "nome": "Brescia ovest",
+      "comuni": [
+        "Cellatica",
+        "Gussago",
+        "Rodengo Saiano",
+        "Castegnato"
+      ]
+    }
+  }
+]
