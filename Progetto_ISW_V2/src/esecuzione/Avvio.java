@@ -15,6 +15,7 @@ public class Avvio {
 		GestorePersistenza gestore= new GestorePersistenza();
 		LogicaPersistenza logica = new LogicaPersistenza();
 		MenuPrincipale menu = new MenuPrincipale(logica);
+		System.out.println("CIAO");
 		menu.azioniMenuPrincipale();
 	}
 
