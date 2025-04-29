@@ -38,6 +38,9 @@ public class Gerarchia {
 	public Comprensorio getComprensorio() {
 		return comprensorio;
 	}
+	public String getNomeComprensorio() {
+		return comprensorio.getNome();
+	}
 	
 	/**
 	 * Metodo per verificare se una gerarchia ha lo stesso nome di un'altra

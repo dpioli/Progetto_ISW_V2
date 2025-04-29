@@ -1,8 +1,8 @@
 [
   {
     "username": "era",
-    "password": "era",
-    "mail": "psw",
+    "password": "psw",
+    "mail": "email",
     "comprensorio": {
       "nome": "Brescia ovest",
       "comuni": [

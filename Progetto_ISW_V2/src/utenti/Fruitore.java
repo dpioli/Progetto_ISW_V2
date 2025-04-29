@@ -23,7 +23,7 @@ public class Fruitore {
 	 * @param mail
 	 * @param username
 	 */
-	public Fruitore (Comprensorio comprensorio, String password, String mail, String username) {
+	public Fruitore (Comprensorio comprensorio, String username, String password, String mail) {
 		this.username = username;
 		this.password = password;
 		this.mail = mail;
@@ -56,6 +56,9 @@ public class Fruitore {
 
 	public Comprensorio getComprensorio() {
 		return comprensorio;
+	}
+	public String getNomeComprensorio() {
+		return comprensorio.getNome();
 	}
 
 	public void setComprensorio(Comprensorio comprensorio) {

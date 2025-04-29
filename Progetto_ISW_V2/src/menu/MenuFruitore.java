@@ -31,7 +31,7 @@ public class MenuFruitore extends Menu{
 		System.out.println("Gerarchie presenti nel tuo comprensorio:");
 		ArrayList<Gerarchia> gerarch = new ArrayList<Gerarchia>();
 		for(Gerarchia g: logica.getGerarchie()) {
-			if(g.getComprensorio().equals(fruit.getComprensorio())) {
+			if(g.getNomeComprensorio().equals(fruit.getNomeComprensorio())) {
 				gerarch.add(g);
 			}
 		}
@@ -44,12 +44,12 @@ public class MenuFruitore extends Menu{
             navigaCategoria(gScelta.getCatRadice(), new HashMap<>()); // Inizializziamo la mappa dei valori di campo per la navigazione
 		}
 		
-		//DA TERMINARE METODO RICORSIVO PER ANDARE AVANRI E INDIETRO
+		//DA TERMINARE METODO RICORSIVO PER ANDARE AVANTI E INDIETRO
 	}
 
 	private Gerarchia selezionaGerarchia(ArrayList<Gerarchia> gerarch) {
 		for(int i = 0; i < gerarch.size(); i++) {
-			System.out.println(i + ": " + gerarch.get(i));
+			System.out.println(i + ": " + gerarch.get(i).getNomeComprensorio());
 		}
 		
 		int scelta = InputDati.leggiIntero("Seleziona una gerarchia > ", 0, gerarch.size() - 1);

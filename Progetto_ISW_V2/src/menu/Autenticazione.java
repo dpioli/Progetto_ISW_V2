@@ -140,7 +140,7 @@ public class Autenticazione {
 			System.out.println("Non è presente nessun comprensorio, creane uno prima di continuare");
 			return;
 		}
-		System.out.println("Scegli il comprensorio a cui appartieni");
+		System.out.println("\nScegli il comprensorio a cui appartieni tra quelli presenti...");
 		Comprensorio comp = Menu.selezionaComprensorio(logica.getComprensori());
 		
 		String newUsername = inserisciUsernameFruit();
@@ -149,6 +149,8 @@ public class Autenticazione {
 		
 		logica.addFruitore(new Fruitore(comp, newUsername, newPassword, mail));
 		GestorePersistenza.salvaFruitori(logica.getFruitori());
+		
+		System.out.println("\n\nRegistrazione avvenuta con successo.\n");
 	}
 
 	/***
