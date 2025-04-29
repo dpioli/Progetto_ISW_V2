@@ -12,5 +12,19 @@
         "Castegnato"
       ]
     }
+  },
+  {
+    "username": "diego",
+    "password": "pioli",
+    "mail": "diegopioli@isw.it",
+    "comprensorio": {
+      "nome": "Brescia ovest",
+      "comuni": [
+        "Cellatica",
+        "Gussago",
+        "Rodengo Saiano",
+        "Castegnato"
+      ]
+    }
   }
 ]
