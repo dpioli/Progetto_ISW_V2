@@ -1,5 +1,8 @@
 package menu;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import applicazione.Comprensorio;
 import persistenza.GestorePersistenza;
 import persistenza.LogicaPersistenza;
@@ -145,7 +148,7 @@ public class Autenticazione {
 		
 		String newUsername = inserisciUsernameFruit();
 		String newPassword = InputDati.leggiStringaNonVuota(MSG_NEW_PASSWORD);
-		String mail = InputDati.leggiStringaNonVuota("Inserisci la tua mail > ");
+		String mail = inserisciEmail();
 		
 		logica.addFruitore(new Fruitore(comp, newUsername, newPassword, mail));
 		GestorePersistenza.salvaFruitori(logica.getFruitori());
@@ -212,6 +215,7 @@ public class Autenticazione {
 		return newUsername;
 	}
 	
+	
 	public String inserisciUsernameFruit() {
 		boolean corretto = false;
 		String newUsername = "";
@@ -226,6 +230,28 @@ public class Autenticazione {
 			}
 		} while(!corretto);
 		return newUsername;
+	}
+	
+	public String inserisciEmail() {
+		String email;
+		do {
+			email = InputDati.leggiStringaNonVuota("Inserisci la tua mail > ");
+			if(controllaEmail(email)) 
+				return email;
+			else
+				System.out.println("\nPer piacere, inserire l'indirizzo email nel formato corretto.");
+		} while (true);
+	}
+	
+	private boolean controllaEmail(String daControllare) {
+		if (daControllare == null || daControllare.isEmpty()) {
+            return false;
+        }
+        String range = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+.[A-Za-z]";
+        Pattern pattern = Pattern.compile(range);
+        Matcher matcher = pattern.matcher(daControllare);
+        
+        return matcher.matches();
 	}
 	
 	

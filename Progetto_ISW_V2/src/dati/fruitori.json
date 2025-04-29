@@ -26,5 +26,19 @@
         "Castegnato"
       ]
     }
+  },
+  {
+    "username": "prova",
+    "password": "email",
+    "mail": "email@q.true",
+    "comprensorio": {
+      "nome": "Brescia ovest",
+      "comuni": [
+        "Cellatica",
+        "Gussago",
+        "Rodengo Saiano",
+        "Castegnato"
+      ]
+    }
   }
 ]
