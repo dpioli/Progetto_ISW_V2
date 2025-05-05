@@ -55,9 +55,61 @@ public class MenuFruitore extends Menu{
 		int scelta = InputDati.leggiIntero("Seleziona una gerarchia > ", 0, gerarch.size() - 1);
 		return gerarch.get(scelta);
 	}
+
+
+
+	//modifica navigaCategoria e selezionaSottoCategoria
+	private void navigaCategoria(Categoria categoriaCorrente, Map<String, String> valoriImpostati) {
+	    System.out.println("\nCategoria corrente: " + categoriaCorrente.getNome());
+
+	    if (!valoriImpostati.isEmpty()) {
+	        System.out.println("Valori impostati finora: " + valoriImpostati);
+	    }
+
+	    if (categoriaCorrente.isFoglia()) {
+	        System.out.println("Sei arrivato a una categoria foglia: " + categoriaCorrente.getNome());
+	        System.out.println("Ritorno al menu principale.\n");
+	        return;
+	    }
+
+	    List<Categoria> sottocategorie = categoriaCorrente.getSottoCateg();
+	    if (sottocategorie == null || sottocategorie.isEmpty()) {
+	        System.out.println("Non ci sono sottocategorie. Ritorno al menu principale.");
+	        return;
+	    }
+
+	    CampoCaratteristico campo = categoriaCorrente.getCampCaratt();
+	    Categoria prossimaCategoria = null;
+
+	    if (campo != null) {
+	        System.out.println("Campo caratteristico: " + campo.getNomeCampo());
+	    }
+
+	    prossimaCategoria = selezionaSottoCategoria(sottocategorie);
+
+	    if (prossimaCategoria != null) {
+	        navigaCategoria(prossimaCategoria, new HashMap<>(valoriImpostati));
+	    }
+	}
+	
+	
 	
 
-	private void navigaCategoria(Categoria categoriaCorrente, Map<String, String> valoriImpostati) {
+	private Categoria selezionaSottoCategoria(List<Categoria> sottocategorie) {
+	    System.out.println("Sottocategorie disponibili:");
+	    for (int i = 0; i < sottocategorie.size(); i++) {
+	        System.out.println((i + 1) + ". " + sottocategorie.get(i).getNome());
+	    }
+	    
+	    System.out.println("0. Torna al menu");
+	    int scelta = InputDati.leggiIntero("Scegli una sottocategoria: ", 0, sottocategorie.size());
+	    if (scelta == 0) return null;
+	    return sottocategorie.get(scelta - 1);
+	}
+
+
+
+	/*private void navigaCategoria(Categoria categoriaCorrente, Map<String, String> valoriImpostati) {
         System.out.println("\nCategoria corrente: " + categoriaCorrente.getNome());
         if (!valoriImpostati.isEmpty()) {
             System.out.println("Valori impostati finora: " + valoriImpostati);
@@ -136,6 +188,6 @@ public class MenuFruitore extends Menu{
 
         int scelta = InputDati.leggiIntero("Seleziona una sottocategoria: ", 1, sottocategorie.size());
         return sottocategorie.get(scelta - 1);
-    }
+    }*/
 
 }
