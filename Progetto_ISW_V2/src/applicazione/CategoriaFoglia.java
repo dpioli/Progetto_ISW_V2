@@ -2,7 +2,7 @@ package applicazione;
 
 /**
  * Classe per andare a identificare una classe foglia di una gerarchia
- * @author Irene Romano num.mat
+ * @author Irene Romano 736566
  *
  */
 public class CategoriaFoglia extends Categoria{
