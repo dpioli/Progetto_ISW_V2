@@ -4,7 +4,7 @@ import applicazione.Comprensorio;
 
 
 /**
- * Classe per identificare le proprieta' di un configuratore
+ * Classe per identificare le proprieta' di un fruitore
  * @author Irene Romano 736566
  *
  */
