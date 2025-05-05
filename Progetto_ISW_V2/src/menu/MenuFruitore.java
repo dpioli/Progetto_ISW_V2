@@ -13,7 +13,7 @@ import util.Menu;
 /**
  * Classe per definite il menu delle funzionalità del fruitore
  * 
- * @author Irene Romano num.mat
+ * @author Irene Romano 736566
  *
  */
 public class MenuFruitore extends Menu{
