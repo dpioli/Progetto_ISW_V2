@@ -18,7 +18,7 @@ import util.Menu;
  *
  */
 public class Autenticazione {
-	
+
 	private LogicaPersistenza logica;
 	
 	private static final String USERNAME_PREDEFINITO = "configuratore";
@@ -43,6 +43,14 @@ public class Autenticazione {
 	private static final String MSG_ACCESSO_RIUSCITO = "\nAccesso effettuato con successo -- ";
 
 	private static final String MSG_NON_VALIDO = "Username non valido, utente già registrato nel sistema. Riprova. ";
+	
+	///////////////////
+	private static final String MSG_ASSENZA_COMPRENSORIO = "Non è presente nessun comprensorio, creane uno prima di continuare.";
+	private static final String MSG_SELEZ_COMP = "\nScegli il comprensorio a cui appartieni tra quelli presenti";
+	private static final String MSG_SUCC_REGIST = "\n\nRegistrazione avvenuta con successo.\n";
+	private static final String MSG_INSERISCI_MAIL = "Inserisci la tua mail > ";
+	private static final String FORMATO_MAIL_ERRATO = "\nPer piacere, inserire l'indirizzo email nel formato corretto.";
+	private static final String FILTER = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+.[A-Za-z]";
 	
 	private static final String RILEVATA_RICHIESTA_DI_USCITA = "Rilevata richiesta di uscita.";
 	private static final String ESC = "ESC";
@@ -93,6 +101,10 @@ public class Autenticazione {
 		return null;
 	}
 	
+	/**
+	 * Metodo che verifica le credenziali del fruitore
+	 * @return Fruitore
+	 */
 	public Fruitore accessoFruitore() {
 		String username = InputDati.leggiStringaNonVuota(MSG_ASK_USERNAME);
 		String password;
@@ -136,14 +148,21 @@ public class Autenticazione {
 		GestorePersistenza.salvaConfiguratori(logica.getConfiguratori());
 	}
 	
-	
+	/**
+	 * METODO PER REGISTRARSI PER LA PRIMA VOLTA COME FRUITORE
+	 * 1. Controllo presenza di comprensori
+	 * 2. Selezione comprensorio di appartenenza
+	 * 3. Inserimento username
+	 * 4. Inserimento password
+	 * 5. Inserimento mail
+	 */
 	public void primoAccessoFruit() {
 		
 		if(logica.getComprensori().isEmpty()) {
-			System.out.println("Non è presente nessun comprensorio, creane uno prima di continuare");
+			System.out.println(MSG_ASSENZA_COMPRENSORIO);
 			return;
 		}
-		System.out.println("\nScegli il comprensorio a cui appartieni tra quelli presenti...");
+		System.out.println(MSG_SELEZ_COMP);
 		Comprensorio comp = Menu.selezionaComprensorio(logica.getComprensori());
 		
 		String newUsername = inserisciUsernameFruit();
@@ -153,7 +172,7 @@ public class Autenticazione {
 		logica.addFruitore(new Fruitore(comp, newUsername, newPassword, mail));
 		GestorePersistenza.salvaFruitori(logica.getFruitori());
 		
-		System.out.println("\n\nRegistrazione avvenuta con successo.\n");
+		System.out.println(MSG_SUCC_REGIST);
 	}
 
 	/***
@@ -215,7 +234,10 @@ public class Autenticazione {
 		return newUsername;
 	}
 	
-	
+	/**
+	 * Metodo per controllare l'unicità del nome del fruitore
+	 * @return username valido 
+	 */
 	public String inserisciUsernameFruit() {
 		boolean corretto = false;
 		String newUsername = "";
@@ -232,29 +254,42 @@ public class Autenticazione {
 		return newUsername;
 	}
 	
+	/**
+	 * Metodo per inserire la mail del fruitore
+	 * @return mail corretta
+	 */
 	public String inserisciEmail() {
 		String email;
 		do {
-			email = InputDati.leggiStringaNonVuota("Inserisci la tua mail > ");
+			email = InputDati.leggiStringaNonVuota(MSG_INSERISCI_MAIL);
 			if(controllaEmail(email)) 
 				return email;
 			else
-				System.out.println("\nPer piacere, inserire l'indirizzo email nel formato corretto.");
+				System.out.println(FORMATO_MAIL_ERRATO);
 		} while (true);
 	}
 	
+	/**
+	 * Metodo che effettua il controllo sulla formattazione della mail 
+	 * @param daControllare
+	 * @return true se formato corretto | false se formato incorretto
+	 */
 	private boolean controllaEmail(String daControllare) {
 		if (daControllare == null || daControllare.isEmpty()) {
             return false;
         }
-        String range = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+.[A-Za-z]";
+        String range = FILTER;
         Pattern pattern = Pattern.compile(range);
         Matcher matcher = pattern.matcher(daControllare);
         
         return matcher.matches();
 	}
 	
-	
+	/**
+	 * Metodo per verificare la presenza di un fruitore nel sistema
+	 * @param username
+	 * @return true e' presente | false non e' presente
+	 */
 	public boolean ePresenteFruitore(String username) {
 		for(Fruitore f: logica.getFruitori()) {
 			if(f.getUsername().equals(username)) {

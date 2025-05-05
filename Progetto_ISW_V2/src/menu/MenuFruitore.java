@@ -10,6 +10,12 @@ import utenti.Fruitore;
 import util.InputDati;
 import util.Menu;
 
+/**
+ * Classe per definite il menu delle funzionalità del fruitore
+ * 
+ * @author Irene Romano num.mat
+ *
+ */
 public class MenuFruitore extends Menu{
 	
 	private Fruitore fruit;
@@ -18,17 +24,41 @@ public class MenuFruitore extends Menu{
 	private static final String titolo = "\tMENU FRUITORE";
 	
 	private static final String NAVIGA = "Naviga tra le gerarchie";
+	private static final String X = "\n******************************************";
+	private static final String MSG_INIZIALE = "Gerarchie presenti nel tuo comprensorio:";
+	private static final String MSG_ASSENZA_GERARCH = "Non ci sono gerarchie presenti per il tuo comprensorio.";
+	private static final String MSG_SELEZ_GERARCH = "Seleziona una gerarchia > ";
+	private static final String CATEGORIA_CORRENTE = "\nCategoria corrente: ";
+	private static final String VALORI_IMPOSTATI = "Valori impostati finora: ";
+	private static final String MSG_CATEG_FOGLIA = "Sei arrivato a una categoria foglia: ";
+	private static final String MSG_MENU_PRINCIPALE = "Ritorno al menu principale.\n";
+	private static final String MSG_ASSENZA_SOTTOCATEG = "Non ci sono sottocategorie. Ritorno al menu principale.";
+	private static final String MSG_CAMPO_CARATT = "Campo caratteristico: ";
+	private static final String MSG_SOTTOCATEG_DISP = "Sottocategorie disponibili:";
+	private static final String DOT = ". ";
+	private static final String COLON = ": ";
+	private static final String MSG_VOCE_TORNA_INDIETRO = "0. Torna al menu";
 	
 	private static String[] vociFruit = {NAVIGA};
 	
+	/**
+	 * Construttore di MenuFruitore
+	 * 
+	 * @param fruit
+	 * @param logica
+	 */
 	public MenuFruitore(Fruitore fruit, LogicaPersistenza logica) {
 		super(titolo, vociFruit);
 		this.fruit = fruit;
 		this.logica = logica;
 	}
-
+	
+	/**
+	 * Metodo per navigare in profondita' tra le gerarchie
+	 */
 	public void naviga() {
-		System.out.println("Gerarchie presenti nel tuo comprensorio:");
+		System.out.println(X);
+		System.out.println(MSG_INIZIALE);
 		ArrayList<Gerarchia> gerarch = new ArrayList<Gerarchia>();
 		for(Gerarchia g: logica.getGerarchie()) {
 			if(g.getNomeComprensorio().equals(fruit.getNomeComprensorio())) {
@@ -37,44 +67,54 @@ public class MenuFruitore extends Menu{
 		}
 		Gerarchia gScelta;
 		if(gerarch.isEmpty()) {
-			System.out.println("Non ci sono gerarchie presenti per il tuo comprensorio.");
+			System.out.println(MSG_ASSENZA_GERARCH);
 			return;
 		} else {
 			gScelta = selezionaGerarchia(gerarch);
-            navigaCategoria(gScelta.getCatRadice(), new HashMap<>()); // Inizializziamo la mappa dei valori di campo per la navigazione
+            navigaCategoria(gScelta.getCatRadice(), new HashMap<>()); 
+            // Inizializziamo la mappa dei valori di campo per la navigazione
 		}
 		
-		//DA TERMINARE METODO RICORSIVO PER ANDARE AVANTI E INDIETRO
+		
 	}
-
+	
+	/**
+	 * Metodo per selezionare una gerarchia presente all'interno del comprensorio selezionato
+	 * @param gerarch
+	 * @return
+	 */
 	private Gerarchia selezionaGerarchia(ArrayList<Gerarchia> gerarch) {
 		for(int i = 0; i < gerarch.size(); i++) {
-			System.out.println(i + ": " + gerarch.get(i).getNomeComprensorio());
+			System.out.println(i + COLON + gerarch.get(i).getCatRadice().getNome());
 		}
 		
-		int scelta = InputDati.leggiIntero("Seleziona una gerarchia > ", 0, gerarch.size() - 1);
+		int scelta = InputDati.leggiIntero(MSG_SELEZ_GERARCH, 0, gerarch.size() - 1);
 		return gerarch.get(scelta);
 	}
 
 
 
-	//modifica navigaCategoria e selezionaSottoCategoria
+	/**
+	 * Metodo per andare a modificare l'output in base ai percorsi selezionati
+	 * @param categoriaCorrente
+	 * @param valoriImpostati
+	 */
 	private void navigaCategoria(Categoria categoriaCorrente, Map<String, String> valoriImpostati) {
-	    System.out.println("\nCategoria corrente: " + categoriaCorrente.getNome());
+	    System.out.println(CATEGORIA_CORRENTE + categoriaCorrente.getNome());
 
 	    if (!valoriImpostati.isEmpty()) {
-	        System.out.println("Valori impostati finora: " + valoriImpostati);
+	        System.out.println(VALORI_IMPOSTATI + valoriImpostati);
 	    }
 
 	    if (categoriaCorrente.isFoglia()) {
-	        System.out.println("Sei arrivato a una categoria foglia: " + categoriaCorrente.getNome());
-	        System.out.println("Ritorno al menu principale.\n");
+	        System.out.println(MSG_CATEG_FOGLIA + categoriaCorrente.getNome());
+	        System.out.println(MSG_MENU_PRINCIPALE);
 	        return;
 	    }
 
 	    List<Categoria> sottocategorie = categoriaCorrente.getSottoCateg();
 	    if (sottocategorie == null || sottocategorie.isEmpty()) {
-	        System.out.println("Non ci sono sottocategorie. Ritorno al menu principale.");
+	        System.out.println(MSG_ASSENZA_SOTTOCATEG);
 	        return;
 	    }
 
@@ -82,7 +122,7 @@ public class MenuFruitore extends Menu{
 	    Categoria prossimaCategoria = null;
 
 	    if (campo != null) {
-	        System.out.println("Campo caratteristico: " + campo.getNomeCampo());
+	        System.out.println(MSG_CAMPO_CARATT + campo.getNomeCampo());
 	    }
 
 	    prossimaCategoria = selezionaSottoCategoria(sottocategorie);
@@ -92,102 +132,21 @@ public class MenuFruitore extends Menu{
 	    }
 	}
 	
-	
-	
-
+	/**
+	 * Metodo per selezionare una sottocategoria presente
+	 * @param sottocategorie
+	 * @return
+	 */
 	private Categoria selezionaSottoCategoria(List<Categoria> sottocategorie) {
-	    System.out.println("Sottocategorie disponibili:");
+	    System.out.println(MSG_SOTTOCATEG_DISP);
 	    for (int i = 0; i < sottocategorie.size(); i++) {
-	        System.out.println((i + 1) + ". " + sottocategorie.get(i).getNome());
+	        System.out.println((i + 1) + DOT + sottocategorie.get(i).getNome());
 	    }
 	    
-	    System.out.println("0. Torna al menu");
-	    int scelta = InputDati.leggiIntero("Scegli una sottocategoria: ", 0, sottocategorie.size());
+	    System.out.println(MSG_VOCE_TORNA_INDIETRO);
+	    int scelta = InputDati.leggiIntero(MSG_SELEZ_GERARCH, 0, sottocategorie.size());
 	    if (scelta == 0) return null;
 	    return sottocategorie.get(scelta - 1);
 	}
-
-
-
-	/*private void navigaCategoria(Categoria categoriaCorrente, Map<String, String> valoriImpostati) {
-        System.out.println("\nCategoria corrente: " + categoriaCorrente.getNome());
-        if (!valoriImpostati.isEmpty()) {
-            System.out.println("Valori impostati finora: " + valoriImpostati);
-        }
-
-        if (categoriaCorrente.isFoglia()) {
-            System.out.println("Questa è una categoria foglia. Ritorno al menu principale.");
-            return;
-        }
-
-        List<Categoria> sottocategorie = categoriaCorrente.getSottoCateg();
-        if (sottocategorie.isEmpty()) {
-            System.out.println("Non ci sono sottocategorie. Ritorno al menu principale.");
-            return;
-        }
-
-        Categoria prossimaCategoria = null;
-        if (categoriaCorrente.getCampCaratt() != null) {
-            CampoCaratteristico campoCaratt = categoriaCorrente.getCampCaratt();
-            System.out.println("Campo caratteristico: " + campoCaratt.getNomeCampo());
-            Map<String, String> valoriDisponibili = campoCaratt.getValori();
-            if (!valoriDisponibili.isEmpty()) {
-                System.out.println("Valori disponibili: " + valoriDisponibili.keySet());
-                String valoreScelto = InputDati.leggiStringa("Seleziona un valore per '" + campoCaratt.getNomeCampo() + "' (o lascia vuoto per non specificare): ");
-                if (!valoreScelto.isEmpty() && valoriDisponibili.containsKey(valoreScelto)) {
-                    valoriImpostati.put(campoCaratt.getNomeCampo(), valoreScelto);
-                    // Trova la sottocategoria che corrisponde al valore scelto (se la logica lo prevede)
-                    // In questo esempio, assumiamo che la scelta del valore guidi verso una specifica sottocategoria.
-                    // Potrebbe essere necessario adattare questa parte in base alla tua logica di gerarchia.
-                    boolean trovata = false;
-                    for (Categoria subCat : sottocategorie) {
-                        if (subCat.getNome().equalsIgnoreCase(valoreScelto)) { // Esempio semplificato: nome sottocategoria = valore
-                            prossimaCategoria = subCat;
-                            trovata = true;
-                            break;
-                        }
-                    }
-                    if (!trovata && !sottocategorie.isEmpty()) {
-                        System.out.println("Valore non trovato come sottocategoria diretta. Si mostrano le sottocategorie disponibili:");
-                        prossimaCategoria = selezionaSottoCategoria(sottocategorie);
-                    } else if (trovata) {
-                        System.out.println("Selezionata sottocategoria basata sul valore: " + prossimaCategoria.getNome());
-                    } else if (sottocategorie.isEmpty()) {
-                        System.out.println("Nessuna sottocategoria disponibile dopo la selezione del valore.");
-                        return;
-                    }
-                } else if (!sottocategorie.isEmpty()) {
-                    prossimaCategoria = selezionaSottoCategoria(sottocategorie);
-                } else {
-                    System.out.println("Nessuna sottocategoria disponibile.");
-                    return;
-                }
-            } else if (!sottocategorie.isEmpty()) {
-                prossimaCategoria = selezionaSottoCategoria(sottocategorie);
-            } else {
-                System.out.println("Nessuna sottocategoria disponibile.");
-                return;
-            }
-        } else if (!sottocategorie.isEmpty()) {
-            prossimaCategoria = selezionaSottoCategoria(sottocategorie);
-        } else {
-            System.out.println("Nessuna sottocategoria disponibile.");
-            return;
-        }
-
-        if (prossimaCategoria != null) {
-            navigaCategoria(prossimaCategoria, new HashMap<>(valoriImpostati)); // Passa una copia dei valori impostati
-        }
-    }
-
-    private Categoria selezionaSottoCategoria(List<Categoria> sottocategorie) {
-        System.out.println("Sottocategorie disponibili:");
-        for (int i = 0; i < sottocategorie.size(); i++) {
-            System.out.println((i + 1) + ". " + sottocategorie.get(i).getNome());
-        }
-
-        int scelta = InputDati.leggiIntero("Seleziona una sottocategoria: ", 1, sottocategorie.size());
-        return sottocategorie.get(scelta - 1);
-    }*/
 
 }

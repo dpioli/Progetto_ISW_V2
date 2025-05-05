@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Classe per andare a identificare le proprieta0 si un comprensorio
- * @author Erjona Maxhaku 735766
+ * @author Irene Romano num.mat
  *
  */
 public class Comprensorio {
