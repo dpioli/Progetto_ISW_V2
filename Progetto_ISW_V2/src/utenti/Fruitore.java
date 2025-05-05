@@ -5,7 +5,7 @@ import applicazione.Comprensorio;
 
 /**
  * Classe per identificare le proprieta' di un configuratore
- * @author Irene Romano num.mat
+ * @author Irene Romano 736566
  *
  */
 
