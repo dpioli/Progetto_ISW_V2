@@ -24,6 +24,7 @@ public class MenuFruitore extends Menu{
 	private static final String titolo = "\tMENU FRUITORE";
 	
 	private static final String NAVIGA = "Naviga tra le gerarchie";
+	private static final String P_PREC = "Torna alla pagina di autenticazione";
 	private static final String X = "\n******************************************";
 	private static final String MSG_INIZIALE = "Gerarchie presenti nel tuo comprensorio:";
 	private static final String MSG_ASSENZA_GERARCH = "Non ci sono gerarchie presenti per il tuo comprensorio.";
@@ -39,7 +40,7 @@ public class MenuFruitore extends Menu{
 	private static final String COLON = ": ";
 	private static final String MSG_VOCE_TORNA_INDIETRO = "0. Torna al menu";
 	
-	private static String[] vociFruit = {NAVIGA};
+	private static String[] vociFruit = {NAVIGA, P_PREC};
 	
 	/**
 	 * Construttore di MenuFruitore
