@@ -175,6 +175,7 @@ public class MenuConfiguratore extends Menu {
 		GestorePersistenza.salvaConfiguratori(logica.getConfiguratori());
 		salvaGerarchieEFoglie();
 		GestorePersistenza.salvaComprensori(logica.getComprensori());
+		GestorePersistenza.salvaFruitori(logica.getFruitori());
 		System.out.println(MSG_SALVATAGGIO);
 	}
 	
